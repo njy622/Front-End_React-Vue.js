@@ -1,6 +1,8 @@
 // import './App.css'
 // import { people } from './data.js';
 
+import { useEffect } from "react";
+
 
 
 
@@ -170,44 +172,158 @@
 
 
 
+// import { useState } from "react";
+
+// export default function App() {
+
+//   const [text, setText] = useState('');
+//   const [todos, setTodos] = useState([
+//     {title: '고객에게 메일보내기', completed: false},
+//     {title: '저녁 미팅', completed: false},
+//     {title: '집 청소하기', completed: true}
+//   ]);
+
+//   const onTodoType = e => {
+//     setText(e.target.value);   // 텍스트를 입력하면 변경됨
+//   }
+
+//   const onAddTodo = () => {
+//     alert(text); // 텍스트값이 제대로 인식하는지 테스트
+//     // array에 아이템을 추가하기 위해 immutable 한 방식을 사용한다.
+//     // setTodos(todos.append({title: text, completed: false})); - 작동 안됨
+//     setTodos([
+//       // 기존의 배열에 새로운 아이템을 추가해서 todos를 풀어서 써야함
+//       ...todos,
+//       {title: text, completed: false}
+//     ]) 
+//   }
+
+//   return(
+//     <>
+//       <h3>할일 목록</h3>
+//       {/* onChange={}: 글자가 변경되었을때 발생하는 이벤트 함수 */}
+//       <input type="text" value={text} onChange={onTodoType}/> 
+//       <button onClick={onAddTodo}>할일추가</button>
+//       <ul>
+//         {
+//           todos.map(todo => <li>{todo.title} - {todo.completed ? '완료': '진행중'}</li>)
+//         }
+//       </ul>
+//     </>
+//   );
+
+// }
+
+//======================= 2024.03.24 8차시. 서버데이터 useEffect nextjs ==========================
+
+
+//==================================== useEffect 사용하기전 =============================================
+// import { useState } from "react";
+
+// export default function App() {
+
+//   const [todos, setTodos] = useState([
+//     {
+//       "id": 1,
+//       "title": "delectus aut autem",
+//       "completed": false
+//     },
+//     {
+//       "id": 2,
+//       "title": "quis ut nam facilis et officia qui",
+//       "completed": false
+//     },
+//     {
+//       "id": 3,
+//       "title": "fugiat veniam minus",
+//       "completed": false
+//     },
+//   ])
+
+//   // async(): 데이터를 비동기적으로 가져오며,
+//   // await : 데이터를 가져올 때까지, 기다린다.
+//   const onTodoDataFetch = async () => {
+//     const res = await fetch('https://jsonplaceholder.typicode.com/todos');
+//     const json = await res.json();
+//     console.log(json); // 데이터가 잘 받아와 지는지 확인
+//     setTodos(json); // 데이터를 가져와서 버튼을 누르면 화면에 뿌려줌
+//   };
+
+//   return (
+//     <>
+//       <p>데이터 fetching과 useEffect</p>
+//       {/* feching: 데이터를 가져오는 행위 */}
+//       <hr/>
+//       <button onClick={onTodoDataFetch}>서버에서 데이터 가져오기</button>
+//       <p>할일 목록</p>
+//       <ul>
+//         {
+//           todos.map(todo => <li>{todo.title} - {todo.completed ? '완료' : '진행중'}</li>)
+//         }
+//       </ul>
+//     </>
+//   )
+
+// }
+
+//==================================== useEffect 사용후 =============================================
+
 import { useState } from "react";
 
 export default function App() {
 
-  const [text, setText] = useState('');
   const [todos, setTodos] = useState([
-    {title: '고객에게 메일보내기', completed: false},
-    {title: '저녁 미팅', completed: false},
-    {title: '집 청소하기', completed: true}
+    {
+      "id": 1,
+      "title": "delectus aut autem",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "title": "quis ut nam facilis et officia qui",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "title": "fugiat veniam minus",
+      "completed": false
+    },
   ]);
 
-  const onTodoType = e => {
-    setText(e.target.value);   // 텍스트를 입력하면 변경됨
-  }
+  // useEffect(() => {
+  //   fetchTodosFromServer();
+  // }); // 이렇게 하면 리렌더링 될때마다 데이터를 가져오게 됨 비효율적
 
-  const onAddTodo = () => {
-    alert(text); // 텍스트값이 제대로 인식하는지 테스트
-    // array에 아이템을 추가하기 위해 immutable 한 방식을 사용한다.
-    // setTodos(todos.append({title: text, completed: false})); - 작동 안됨
-    setTodos([
-      // 기존의 배열에 새로운 아이템을 추가해서 todos를 풀어서 써야함
-      ...todos,
-      {title: text, completed: false}
-    ]) 
-  }
+  
+  useEffect(() => {
+    fetchTodosFromServer();
+  },[]); // 이렇게 하면, 마운트 될때만 리렌더링되어 데이터를 가져온다
+  // 마운트는 최초의 렌더링
 
-  return(
+
+  const onTodoDataFetch = async () => {
+    fetchTodosFromServer();
+  };
+
+  async function fetchTodosFromServer() {
+    const res = await fetch('https://jsonplaceholder.typicode.com/todos');
+    const json = await res.json();
+    console.log(json); 
+    setTodos(json); 
+  };
+
+  return (
     <>
-      <h3>할일 목록</h3>
-      {/* onChange={}: 글자가 변경되었을때 발생하는 이벤트 함수 */}
-      <input type="text" value={text} onChange={onTodoType}/> 
-      <button onClick={onAddTodo}>할일추가</button>
+      <p>데이터 fetching과 useEffect</p>
+      <hr/>
+      <button onClick={onTodoDataFetch}>서버에서 데이터 가져오기</button>
+      <p>할일 목록</p>
       <ul>
         {
-          todos.map(todo => <li>{todo.title} - {todo.completed ? '완료': '진행중'}</li>)
+          todos.map(todo => <li>{todo.title} - {todo.completed ? '완료' : '진행중'}</li>)
         }
       </ul>
     </>
-  );
+  )
 
 }
