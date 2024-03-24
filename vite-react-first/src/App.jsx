@@ -1,7 +1,7 @@
 // import './App.css'
 // import { people } from './data.js';
 
-import { useEffect } from "react";
+
 
 
 
@@ -268,62 +268,110 @@ import { useEffect } from "react";
 
 //==================================== useEffect 사용후 =============================================
 
-import { useState } from "react";
+// import { useState } from "react";
+
+// export default function App() {
+
+//   const [todos, setTodos] = useState([
+//     {
+//       "id": 1,
+//       "title": "delectus aut autem",
+//       "completed": false
+//     },
+//     {
+//       "id": 2,
+//       "title": "quis ut nam facilis et officia qui",
+//       "completed": false
+//     },
+//     {
+//       "id": 3,
+//       "title": "fugiat veniam minus",
+//       "completed": false
+//     },
+//   ]);
+
+//   // useEffect(() => {
+//   //   fetchTodosFromServer();
+//   // }); // 이렇게 하면 리렌더링 될때마다 데이터를 가져오게 됨 비효율적
+
+  
+//   useEffect(() => {
+//     fetchTodosFromServer();
+//   },[]); // 이렇게 하면, 마운트 될때만 리렌더링되어 데이터를 가져온다
+//   // 마운트는 최초의 렌더링
+
+
+//   const onTodoDataFetch = async () => {
+//     fetchTodosFromServer();
+//   };
+
+//   async function fetchTodosFromServer() {
+//     const res = await fetch('https://jsonplaceholder.typicode.com/todos');
+//     const json = await res.json();
+//     console.log(json); 
+//     setTodos(json); 
+//   };
+
+//   return (
+//     <>
+//       <p>데이터 fetching과 useEffect</p>
+//       <hr/>
+//       <button onClick={onTodoDataFetch}>서버에서 데이터 가져오기</button>
+//       <p>할일 목록</p>
+//       <ul>
+//         {
+//           todos.map(todo => <li>{todo.title} - {todo.completed ? '완료' : '진행중'}</li>)
+//         }
+//       </ul>
+//     </>
+//   )
+
+// }
+
+
+
+// ##########################################################################################
+//==================================== 1차 과제 =============================================
+
+import { useState, useEffect } from "react";
 
 export default function App() {
 
-  const [todos, setTodos] = useState([
-    {
-      "id": 1,
-      "title": "delectus aut autem",
-      "completed": false
-    },
-    {
-      "id": 2,
-      "title": "quis ut nam facilis et officia qui",
-      "completed": false
-    },
-    {
-      "id": 3,
-      "title": "fugiat veniam minus",
-      "completed": false
-    },
-  ]);
 
-  // useEffect(() => {
-  //   fetchTodosFromServer();
-  // }); // 이렇게 하면 리렌더링 될때마다 데이터를 가져오게 됨 비효율적
+  const [text, setText] = useState('Seoul');
+  const [todos, setTodos] = useState(null); // 날씨 데이터를 저장하기 위한 상태 추가
 
-  
-  useEffect(() => {
-    fetchTodosFromServer();
-  },[]); // 이렇게 하면, 마운트 될때만 리렌더링되어 데이터를 가져온다
-  // 마운트는 최초의 렌더링
-
-
-  const onTodoDataFetch = async () => {
-    fetchTodosFromServer();
+  const onTodoType = e => {
+    setText(e.target.value);   // 텍스트를 입력하면 변경됨
   };
 
-  async function fetchTodosFromServer() {
-    const res = await fetch('https://jsonplaceholder.typicode.com/todos');
+
+  const onTodoWeather = async () => {
+    await fetchTodosFromServer(text);
+  };
+
+  useEffect(() => {
+    (async () => {
+      await fetchTodosFromServer(text);
+    })();
+  },[]); 
+
+
+  async function fetchTodosFromServer(CityName) {
+    const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${CityName}&appid=b727321e784e6ace54d5ed8559bc7b2e`);
     const json = await res.json();
     console.log(json); 
     setTodos(json); 
   };
-
+  
   return (
     <>
-      <p>데이터 fetching과 useEffect</p>
+      <p>React기반 날씨 데이터 연동 어플리케이션 구현</p>
       <hr/>
-      <button onClick={onTodoDataFetch}>서버에서 데이터 가져오기</button>
-      <p>할일 목록</p>
-      <ul>
-        {
-          todos.map(todo => <li>{todo.title} - {todo.completed ? '완료' : '진행중'}</li>)
-        }
-      </ul>
+      <input type="text" value={text} onChange={onTodoType}/> 
+      <button onClick={onTodoWeather}>날씨데이터</button>
+    
     </>
-  )
+  );
 
 }
