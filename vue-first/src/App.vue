@@ -1,47 +1,27 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+  const title = '상품목록..';
+  const products = ['아이폰', '갤럭시', '아이패드', '에어팟'];
+  const copyright = 'Copyright 2023 Vue.js';
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  
+  <h1>안녕 뷰.. 안녕 에반 유</h1>
+  <hr>
+  <h3>{{ title }}</h3>
+  <ul>
+    <li>{{ products[0] }}</li>
+    <li>{{ products[1] }}</li>
+    <li>{{ products[2] }}</li>
+    <li>{{ products[3] }}</li>
+  </ul>
+  <h3>{{ copyright }}</h3>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
 </template>
 
+<!-- scoped: App 컴포넌트 안에서만 CSS적용이 되겠다 -->
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+  h1 {
+    color: brown;
   }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
