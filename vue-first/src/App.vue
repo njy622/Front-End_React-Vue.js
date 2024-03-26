@@ -2,7 +2,33 @@
 import { ref } from 'vue';
 
   const title = ref('상품목록..');
-  const products = ref(['아이폰', '갤럭시', '아이패드', '에어팟']);
+  const products_simple = ref(['아이폰', '갤럭시', '아이패드', '에어팟']);
+  const products = ref([
+    {
+      productId: '0021',
+      title: 'iPhone14',
+      price: 1200,
+      discountRate: 15,
+      isRocket: true,
+      stock: 5,
+    },
+    {
+      productId: '0022',
+      title: 'Galaxy23',
+      price: 1300,
+      discountRate: 25,
+      isRocket: true,
+      stock: 12,
+    },
+    {
+      productId: '0023',
+      title: 'Shaomi',
+      price: 800,
+      discountRate: 15,
+      isRocket: false,
+      stock: 0,
+    },
+  ]);
   const copyright = ref('Copyright 2023 Vue.js');
   const imgSrc = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1200px-Vue.js_Logo_2.svg.png';
   const imgWidth = 50;
@@ -10,9 +36,15 @@ import { ref } from 'vue';
   function buttonClicked(){
     alert('hi button clicked..')
   }
+  // function greetButtonClicked(){
+  //   console.log('안녕하세요')
+  // }
   function greetButtonClicked(){
-    console.log('안녕하세요')
+    console.log(copyright.value);
   }
+
+  const typedText = ref('ㄴㅇㄹㄴㅇㄹ');
+  const checkboxchecked = ref(false);
 </script>
 
 <template>
@@ -24,7 +56,11 @@ import { ref } from 'vue';
   <img :src ="imgSrc" :width="imgWidth">
   <!-- HTML에서 onclick => Vue에서 @click 으로 사용 -->
   <button @click="buttonClicked">눌러주세요</button>
-  <button @click="greetButtonClicked">누르면 콘솔로 인사를 합니다</button>
+  <button @click="greetButtonClicked">누르면 콘솔로 인사를 합니다</button><br><br>
+  양방향 테스트 : <input type="text" v-model="typedText">
+  <p>{{ typedText }}</p> <!-- 양방향 바인딩이 되는지 테스트 -->
+  체크박스 <input type="checkbox" v-model="checkboxchecked"><br>
+  <p>{{ checkboxchecked }}</p>
   <h3>{{ title }}</h3>
   <!-- <ul>
     <li>{{ products[0] }}</li>
@@ -36,7 +72,22 @@ import { ref } from 'vue';
   product in products : products의 리스트를 하나씩 product에 넣는다
    (Vue에서만 쓰는 문법)-->
   <ul>
-    <li v-for="product in products">{{ product }}</li>
+    <li v-for="product in products" :key="product.productId">
+      <span v-if="product.stock">
+        <!-- <span v-if="product.stock !== 0"> 이렇게도 사용할 수 있지만 위의 방식으로-->
+        <!-- stock의 값이 0이면 false로 인식해서 화면에 보여지지 않으며,
+            0이 아닌 값이면 ture로 인식하여 화면에 출력 -->
+        {{ product.title }}
+        {{ product.price }}
+        ({{ product.price - (product.price * (product.discountRate /100)) }}) :
+        {{ product.isRocket ? '로켓배송' : '3일후 받아요' }}
+      </span>
+      <span v-else>
+        {{ product.title }}
+        재고없음
+      </span>
+    
+    </li>
   </ul>
 
   <h3>{{ copyright }}</h3>
