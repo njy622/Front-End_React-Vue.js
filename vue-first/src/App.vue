@@ -215,6 +215,11 @@ function getTodoButtonClicked() {
 function yearButtonClicked() {
   year.value++;
 }
+// increaseYear 이벤트 발생했을때, 처리
+function increaseYearFired(event) {
+  console.log('increse year event fired..' + event);
+  year.value = year.value + event;
+}
 </script>
 <template>
 
@@ -222,9 +227,15 @@ function yearButtonClicked() {
   <TodoMain/> 
   <TodoFooter/>
   이렇게 사용하지 않고 아래의 형식으로도 해당 컴포넌트를 불러올 수 있음 -->
-  <todo-header :title="title"/> 
+
+  <todo-header :title="title">
+    
+  </todo-header> 
   <todo-main :todos="todos" />
-  <todo-footer :year="year" :name="developerName"/>
+  <todo-footer 
+    :year="year" 
+    :name="developerName"
+    @increaseYear="increaseYearFired" />
 
 </template>
 
