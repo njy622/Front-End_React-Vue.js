@@ -105,7 +105,7 @@ import { ref } from 'vue';
 <!-- 20240326_13차시 컴포넌트 라이프사이클 이론 실습 
   할일 목록 가져오는 사이트
 https://jsonplaceholder.typicode.com/todos
--->
+
 
 <script setup>
 // 자바스크립트에서 on으로 시작하면 이벤트함수임
@@ -171,6 +171,61 @@ function getTodoButtonClicked(){
     </li>
   </ul>
   <h3>Copyright 2024  by Nam</h3>
+</template>
+
+<style scoped>
+</style>
+-->
+
+<!-- 20240326_14차시 컴포넌트 개요 설명, 프롭스 설명 -->
+
+
+<script setup>
+import { onMounted, reactive, ref, watch } from 'vue';
+import axios from 'axios';
+
+import TodoHeader from './conponents/TodoHeader.vue'
+import TodoFooter from './conponents/TodoFooter.vue'
+import TodoMain from './conponents/TodoMain.vue'
+
+//states 
+const title = ref('Todo 관리');
+const year = ref(2024);
+const developerName = ref('Nam');
+const todos = ref([]); // {value:[]}
+// const todos = reactive([]);
+
+// year 값이 바뀌면 todos 데이터를 다시 가져오기..
+watch(year, async (newYear) => {
+  const res = await axios.get('https://jsonplaceholder.typicode.com/todos');
+  console.log('watch 함수 호출됨');
+  todos.value = res.data;
+});
+// 화면 로딩된 직후에 실행되는 훅(콜백함수)
+onMounted(async () => {
+  const res = await axios.get('https://jsonplaceholder.typicode.com/todos');
+  todos.value = res.data;
+});
+function getTodoButtonClicked() {
+  fetch('https://jsonplaceholder.typicode.com/todos')
+  .then(result => result.json())
+  .then(json => todos.value = json);
+}
+// year 값을 바꾸는 함수
+function yearButtonClicked() {
+  year.value++;
+}
+</script>
+<template>
+
+  <!-- <TodoHeader/> 
+  <TodoMain/> 
+  <TodoFooter/>
+  이렇게 사용하지 않고 아래의 형식으로도 해당 컴포넌트를 불러올 수 있음 -->
+  <todo-header :title="title"/> 
+  <todo-main :todos="todos" />
+  <todo-footer :year="year" :name="developerName"/>
+
 </template>
 
 <style scoped>
