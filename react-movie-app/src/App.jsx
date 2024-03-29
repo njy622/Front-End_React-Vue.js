@@ -9,6 +9,20 @@ function App() {
   const [movies, setMovies] = useState([]);
 
   useEffect(()=> {
+    fetchMovieData('now_playing');
+  },[]);
+  
+  // 커스텀 훅을 만들어서 State 부분과 fetch(백엔드) 부분을 분리하여 리팩토링 하자.
+  // 훅을 이용할때는, 훅 디렉토리를 만듦 (hooks/useFecthMovieData.js)
+
+
+  const fetchMovieData = (id) => {
+    let url = '';
+    if (['now_playing', 'popular', 'top_rated'].includes(id)) {
+      url = `https://api.themoviedb.org/3/movie/${id}?language=ko`
+    } else {
+      url = `https://api.themoviedb.org/3/search/movie?query=${id}&include_adult=false&language=ko`
+    }
     const options = {
       method: 'GET',
       headers: {
@@ -17,7 +31,7 @@ function App() {
       }
     };
     
-    fetch('https://api.themoviedb.org/3/movie/now_playing?language=ko&page=1', options)
+    fetch(url, options)
       .then(response => response.json())
       .then(response => {
         console.log(response.results);
@@ -25,10 +39,11 @@ function App() {
       })
       .catch(err => console.error(err));
 
-  },[]);
-  
+  }
+
    const handleMovies = (id) => {
       console.log(id);
+      fetchMovieData(id)
    }
 
   return (
