@@ -11,7 +11,7 @@ export default function useFetchMovieData() {
         if (['now_playing', 'popular', 'top_rated'].includes(movieType)) {
         url = `https://api.themoviedb.org/3/movie/${movieType}?language=ko`;
         } else{
-        url = `https://api.themoviedb.org/3/search/collection?query=${movieType}&include_adult=false&language=ko`
+        url = `https://api.themoviedb.org/3/search/movie?query=${movieType}&include_adult=false&language=ko`
         }
         const options = {
             method: 'GET',
