@@ -24,3 +24,7 @@
 19. 리액트 최종 프로젝트 - Movie App 2 
 20. Vue.js 최종 프로젝트 - Movie App  
 21. Vue.js 최종 프로젝트 - Movie App  
+
+![image](https://github.com/njy622/Front-End_React-Vue.js/assets/139431528/d43dd9eb-1b48-48a4-9cf9-3c6f99bff897)
+
+![image](https://github.com/njy622/Front-End_React-Vue.js/assets/139431528/2530c90d-de07-439c-9cb1-1c997e116441)
